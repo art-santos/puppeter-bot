@@ -28,7 +28,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "src/functions/chat.js",
-    "src/functions/variables/newAction.js"
+    "src/functions/variables/newAction.js",
+    "src/app/api/user/create/route.JS"
   ],
   "exclude": ["node_modules"]
 }
