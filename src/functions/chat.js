@@ -2,6 +2,8 @@ const qrcode = require("qrcode-terminal");
 const { Client, LocalAuth } = require("whatsapp-web.js");
 const sqlite3 = require("sqlite3").verbose();
 const db = new sqlite3.Database("clients.db");
+const { MessageMedia, Buttons, List } = require("whatsapp-web.js");
+
 const {
   messages,
   overflowMessages,
@@ -132,6 +134,12 @@ async function handleMessageFlow(phoneNumber, msg) {
       blocked = false;
       chat.clearState();
       msg.reply(selectedMessage);
+      const media = MessageMedia.fromFilePath("./variables/me-1.jpeg"); // Replace with the path to your image file
+      client.sendMessage(phoneNumber, media, {
+        caption: "Eu bem gostosinha",
+      }); // phoneNumber should be the recipient's number
     }, (selectedMessage.length * 100) / 4);
   });
 }
+
+//Vaitomarnocu12345@

@@ -27,7 +27,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/functions/chat.js"
+    "src/functions/chat.js",
+    "src/functions/variables/newAction.js"
   ],
   "exclude": ["node_modules"]
 }
