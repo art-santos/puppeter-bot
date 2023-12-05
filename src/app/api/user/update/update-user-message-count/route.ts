@@ -24,11 +24,9 @@ export async function POST(req: Request, res: Response) {
     .eq("phone_number", info.phone);
 
   if (userError) {
-    console.log(userError);
     return NextResponse.json({ message: "error", code: 500, error: userError });
   }
 
-  console.log("🚀 ~ file: route.ts:19 ~ POST ~ user:", user);
   //now update the user's message count
   const totalMessages =
     user[0].messages_sent !== null ? user[0].messages_sent : 0;
