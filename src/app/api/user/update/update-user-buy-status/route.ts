@@ -7,6 +7,8 @@ export async function POST(req: Request, res: Response) {
 
   const info = await req.json();
 
+  const phone = trimPhone(info.phone);
+
   //check if the req contains the phone number and the buy status
   if (info.phone === undefined || info.buy_status === undefined) {
     return NextResponse.json({
@@ -20,7 +22,7 @@ export async function POST(req: Request, res: Response) {
   const { data: user, error: userError } = await supabase
     .from("chats")
     .select("phone_number")
-    .eq("phone_number", info.phone);
+    .eq("phone_number", phone);
 
   if (userError) {
     console.log(userError);
@@ -31,7 +33,7 @@ export async function POST(req: Request, res: Response) {
   const { data, error } = await supabase
     .from("chats")
     .update({ buy_status: info.buy_status })
-    .eq("phone_number", info.phone);
+    .eq("phone_number", phone);
 
   if (error) {
     console.log(error);

@@ -1,14 +1,17 @@
-import supabase from "@/app/clients/supabaseClient";
+import supabase from "../../../clients/supabaseClient";
+import { trimPhone } from "./../../../../functions/utils/trimPhone";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request, res: Response) {
   const info = await req.json();
 
+  const phone = trimPhone(info.phone);
+
   //first verify that the phone number is not already in the database
   const { data: user, error: userError } = await supabase
     .from("users")
     .select("phone_number")
-    .eq("phone_number", info.phone);
+    .eq("phone_number", phone);
 
   if (userError) {
     console.log(userError);
@@ -16,7 +19,6 @@ export async function POST(req: Request, res: Response) {
   }
 
   if (user !== undefined && user.length > 0) {
-    console.log("🚀 ~ file: route.ts:19 ~ POST ~ user:", user);
     return NextResponse.json({ message: "duplicate", code: 23504 });
   }
 
@@ -32,7 +34,6 @@ export async function POST(req: Request, res: Response) {
       }
     }
     if (data) {
-      console.log("🚀 ~ file: route.ts:19 ~ POST ~ data:", data);
       return NextResponse.json({
         message: "success",
         code: 201,

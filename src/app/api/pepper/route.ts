@@ -1,15 +1,10 @@
+import supabase from "@/app/clients/supabaseClient";
 import { NextResponse } from "next/server";
-const { Client, LocalAuth } = require("whatsapp-web.js");
 
-const client = new Client({
-  authStrategy: new LocalAuth(),
-});
+export async function POST(req: Request, res: Response) {
+  const info = await req.json();
 
-export function POST(req: Request) {
-  const { body } = req;
+  console.log("🚀 ~ file: route.ts:19 ~ POST ~ info", info);
 
-  console.log(client);
-  // Create a new client using the provided authentication
-
-  return NextResponse.json(body);
+  return NextResponse.json({ message: "success", code: 201 });
 }
