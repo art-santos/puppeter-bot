@@ -1,9 +1,17 @@
-//i'm getting numbers in this format 5511997658395@c.us. Create a function to return the phone number in a format that can be used
-//in the database
+/**
+ * Trims a phone number by removing the domain part and an optional '+' prefix.
+ *
+ * @param {string} phone - The phone number to be trimmed.
+ * @returns {string} - The trimmed phone number.
+ */
+export const trimPhone = (phone: string): string => {
+  // Remove the domain part
+  let trimmed = phone.split("@")[0];
 
-//document it receives a string and returns a string
+  // Remove the '+' prefix if present
+  if (trimmed.startsWith("+")) {
+    trimmed = trimmed.substring(1);
+  }
 
-export const trimPhone = (phone: string) => {
-  const trimmed = phone.split("@")[0];
   return trimmed;
 };
