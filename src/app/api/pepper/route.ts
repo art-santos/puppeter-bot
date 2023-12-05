@@ -1,10 +1,27 @@
-import supabase from "@/app/clients/supabaseClient";
+// pages/api/[...pepper].js
+
+import { PepperWebhookPayload } from "@/functions/utils/types/pepper.interface";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request, res: Response) {
-  const info = await req.json();
+  try {
+    // Parse and type-cast the request body to PepperWebhookPayload
+    const webhookData: PepperWebhookPayload =
+      (await req.json()) as PepperWebhookPayload;
+    console.log("Received webhook:", webhookData);
 
-  console.log("🚀 ~ file: route.ts:19 ~ POST ~ info", info);
+    // Implement your logic to process the webhook data here
 
-  return NextResponse.json({ message: "success", code: 201 });
+    return NextResponse.json({
+      message: "Webhook received successfully",
+      code: 200,
+    });
+  } catch (error) {
+    console.error("Error processing webhook:", error);
+    return NextResponse.json({
+      message: "Error processing webhook",
+      code: 500,
+      error,
+    });
+  }
 }
