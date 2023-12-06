@@ -1,37 +1,36 @@
+import { IUser } from "@/functions/utils/types/interfaces/User.interface.types";
 import axios from "axios";
 
-const route = "http://localhost:3001/api/user/create";
+describe("User Creation Endpoint", () => {
+  const BASE_URL = "http://localhost:3001"; // Replace with your server's URL
+  const route = `${BASE_URL}/api/users/create`;
 
-describe("POST /api/user/create", () => {
-  console.log(route);
-  it("should create a new user if phone number is not duplicate", async () => {
-    const response = await axios.post(route, {
-      //CONVERT IT TO A RANDOM NUMBER
+  it("should create a new user", async () => {
+    const newUser = {
+      // Provide a mock user object that matches the IUser interface
+      phone_number: "+5511998765432",
+      // ... other fields as necessary
+    };
 
-      phone: "12345627890",
-    });
+    const response = await axios.post(route, newUser);
 
-    expect(response.status).toBe(200);
-    expect(response.data).toEqual({
-      message: "success",
-      code: 200,
-    });
-    // Add more assertions as needed
+    expect(response.status).toBe(201);
+    expect(response.data).toHaveProperty("data");
+    // Add more assertions related to the response data
   });
 
   it("should not create a user if phone number is duplicate", async () => {
-    // Assuming '1234567890' is a duplicate phone number
-    const response = await axios.post(route, {
-      phone: "1234567890",
-    });
+    const duplicateUser = {
+      // Provide a mock user object with a duplicate phone number
+      phone_number: "+5511998765432",
+      // ... other fields as necessary
+    };
 
-    expect(response.status).toBe(200); // or the status code you return for duplicates
-    expect(response.data).toEqual({
-      message: "duplicate",
-      code: 23505, // or the error code you use for duplicates
-    });
+    const response = await axios.post(route, duplicateUser);
+
+    expect(response.status).toBe(23504); // Assuming this is the code for duplicates
     // Add more assertions as needed
   });
 
-  // Add more test cases as necessary...
+  // Additional tests for other scenarios...
 });

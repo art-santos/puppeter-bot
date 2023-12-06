@@ -1,31 +1,46 @@
 import { trimPhone } from "./../../../../../functions/utils/trimPhone";
 import supabase from "@/app/clients/supabaseClient";
-import { NextURL } from "next/dist/server/web/next-url";
+import { IUser } from "@/functions/utils/types/interfaces/User.interface.types";
+
 import { NextResponse } from "next/server";
 
-export async function GET(req: Request, res: Response) {
-  //check the req params for the phone number
-  const data = new NextURL(req.url).searchParams.get("phone");
+export async function POST(req: Request, res: Response) {
+  const userInfo: IUser = (await req.json()) as IUser;
+  try {
+    // Validate the user info
+    if (!userInfo || !userInfo.phone_number) {
+      return NextResponse.json({
+        message: "error",
+        code: 500,
+        error: "phone number missing",
+      });
+    }
 
-  //check if the req contains the phone number and the message count
-  if (data === undefined || data === null) {
+    const phone = trimPhone(userInfo.phone_number);
+
+    // Verify that the phone number is not already in the database
+    const { data: existingUser, error: userError } = await supabase
+      .from("chats")
+      .select("phone_number")
+      .eq("phone_number", phone)
+      .limit(1)
+      .select()
+      .returns<IUser>();
+
+    if (userError) {
+      console.log(userError);
+      return NextResponse.json({ message: "error", code: 500 });
+    }
+    // Prepare response data
+    const responseData = { ...existingUser, phone_number: phone };
+
+    return NextResponse.json({ data: responseData, code: 201 });
+  } catch (error: any) {
+    console.log(error);
     return NextResponse.json({
       message: "error",
       code: 500,
-      error: "phone number",
+      error: error.message,
     });
   }
-  const phone = trimPhone(data);
-  //first verify that the phone number is not already in the database
-  const { data: user, error: userError } = await supabase
-    .from("users")
-    .select("phone_number")
-    .eq("phone_number", phone);
-
-  if (userError) {
-    console.log(userError);
-    return NextResponse.json({ message: "error", code: 500, error: userError });
-  }
-
-  return NextResponse.json({ data: user, code: 201, error: null });
 }
