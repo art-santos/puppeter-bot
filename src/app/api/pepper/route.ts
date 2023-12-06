@@ -83,7 +83,6 @@ export async function POST(req: Request, res: Response) {
     }
 
     // get the webhook id
-
     const responseData: WebhookCreationResponse = {
       data: data,
       id: data[0].id,
@@ -91,10 +90,20 @@ export async function POST(req: Request, res: Response) {
       payment_status: getPaymentStatusByKey(data[0].payment_status),
     };
 
-    return NextResponse.json({
-      data: responseData as WebhookCreationResponse,
-      error: null,
-    });
+    if (webhookData.status === undefined || webhookData.status === null) {
+      return NextResponse.json({
+        data: responseData as WebhookCreationResponse,
+        error: {
+          message: "Missing status",
+          code: 400,
+        },
+      });
+    } else {
+      return NextResponse.json({
+        data: responseData as WebhookCreationResponse,
+        error: null,
+      });
+    }
   } catch (error: any) {
     console.error("Error processing webhook:", error);
     return NextResponse.json({
