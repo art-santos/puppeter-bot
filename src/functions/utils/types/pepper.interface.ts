@@ -1,4 +1,4 @@
-import { PAYMENT_STATUS } from "./interfaces/User.interface.types";
+import { PAYMENT_STATUS } from "./enums/PAYMENT_STATUS.enum.types";
 
 export interface PepperWebhookPayload {
   currency: string;

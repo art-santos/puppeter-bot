@@ -1,6 +1,18 @@
 import supabase from "@/app/clients/supabaseClient";
-import { PepperWebhookPayload } from "@/functions/utils/types/pepper.interface";
+import {
+  PAYMENT_STATUS,
+  convertToPaymentStatus,
+  getPaymentStatusByKey,
+} from "../../../functions/utils/types/enums/PAYMENT_STATUS.enum.types";
+import { PepperWebhookPayload } from "../../../functions/utils/types/pepper.interface";
 import { NextResponse } from "next/server";
+
+interface WebhookCreationResponse {
+  data: PepperWebhookPayload[];
+  id: string;
+  phone_number: string;
+  payment_status: PAYMENT_STATUS;
+}
 
 export async function POST(req: Request, res: Response) {
   try {
@@ -11,6 +23,8 @@ export async function POST(req: Request, res: Response) {
     const abandonmentId =
       webhookData.abandonmentId === undefined ? "" : webhookData.abandonmentId;
 
+    const getPaymentStatus = convertToPaymentStatus("WaitingPayment");
+
     const insertData: PepperWebhookPayload = {
       currency: webhookData.currency,
       payment_engine: webhookData.payment_engine,
@@ -18,7 +32,7 @@ export async function POST(req: Request, res: Response) {
       abandonment_id: abandonmentId,
       client_id: webhookData.client_id,
       payment_type: webhookData.payment_type,
-      status: webhookData.status,
+      status: getPaymentStatus,
       prod: webhookData.prod,
       prod_name: webhookData.prod_name,
       producer_name: webhookData.producer_name,
@@ -70,8 +84,15 @@ export async function POST(req: Request, res: Response) {
 
     // get the webhook id
 
+    const responseData: WebhookCreationResponse = {
+      data: data,
+      id: data[0].id,
+      phone_number: data[0].phone_number,
+      payment_status: getPaymentStatusByKey(data[0].payment_status),
+    };
+
     return NextResponse.json({
-      data: { data: data, id: data[0].id, phone_number: data[0].phone_number },
+      data: responseData as WebhookCreationResponse,
       error: null,
     });
   } catch (error: any) {

@@ -1,3 +1,7 @@
+import {
+  PAYMENT_STATUS,
+  getPaymentStatusByKey,
+} from "../../../functions/utils/types/enums/PAYMENT_STATUS.enum.types";
 import { PepperWebhookPayload } from "@/functions/utils/types/pepper.interface";
 import axios from "axios";
 
@@ -6,6 +10,7 @@ describe("Pepper Webhook Endpoint", () => {
   const route = `${BASE_URL}/api/pepper`;
 
   it("should handle a valid webhook request", async () => {
+    console.log(getPaymentStatusByKey("WaitingPayment"));
     const webhookPayload: PepperWebhookPayload = {
       currency: "BRL",
       payment_engine: "pepper",
@@ -14,7 +19,8 @@ describe("Pepper Webhook Endpoint", () => {
       client_id: "00000-0000-0000-0000-000",
       payment_type: "Billet",
       abandonment_id: "PP213123",
-      status: "Paid",
+      //@ts-ignore
+      status: PAYMENT_STATUS.WaitingPayment,
       prod: 10000,
       prod_name: "Maratona Javascript em 30 dias",
       producer_name: "Escola de curso online LTDA",
