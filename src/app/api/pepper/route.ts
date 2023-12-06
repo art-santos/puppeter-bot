@@ -69,7 +69,6 @@ export async function POST(req: Request, res: Response) {
     }
 
     // get the webhook id
-    console.log("Webhook id:", data);
 
     return NextResponse.json({
       data: data[0].id,
