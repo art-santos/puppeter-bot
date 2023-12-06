@@ -71,7 +71,7 @@ export async function POST(req: Request, res: Response) {
     // get the webhook id
 
     return NextResponse.json({
-      data: data[0].id,
+      data: { data: data, id: data[0].id, phone_number: data[0].phone_number },
       error: null,
     });
   } catch (error: any) {
