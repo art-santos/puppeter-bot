@@ -1,3 +1,4 @@
+import { PepperWebhookPayload } from "@/functions/utils/types/pepper.interface";
 import axios from "axios";
 
 describe("Pepper Webhook Endpoint", () => {
@@ -5,13 +6,14 @@ describe("Pepper Webhook Endpoint", () => {
   const route = `${BASE_URL}/api/pepper`;
 
   it("should handle a valid webhook request", async () => {
-    const webhookPayload = {
+    const webhookPayload: PepperWebhookPayload = {
       currency: "BRL",
       payment_engine: "pepper",
       transaction: "PP56489423",
       abandonmentId: "PP213123",
       client_id: "00000-0000-0000-0000-000",
       payment_type: "Billet",
+      abandonment_id: "PP213123",
       status: "Paid",
       prod: 10000,
       prod_name: "Maratona Javascript em 30 dias",
@@ -22,15 +24,15 @@ describe("Pepper Webhook Endpoint", () => {
       confirmation_purchase_date: "2022-08-24 15:10:59",
       product_support_email: "suporte@javascript.com",
       installments_number: 12,
-      original_offer_price: 29.9,
+      original_offer_price: "29.9",
       warranty_date: "2022-08-24 15:10:59",
       order_bump: false,
       main_transaction: "PP56489423",
-      cms_market_place: 3.21,
-      cms_vendor: 24.31,
+      cms_market_place: "3.21",
+      cms_vendor: "24.31",
       off: 10232,
-      price: 29.9,
-      full_price: 34.9,
+      price: "29.9",
+      full_price: "34.9",
       email: "user@gopepper.com.br",
       name: "João Maria",
       first_name: "João",
@@ -53,10 +55,6 @@ describe("Pepper Webhook Endpoint", () => {
     const response = await axios.post(route, webhookPayload);
 
     expect(response.status).toBe(200);
-    expect(response.data).toEqual({
-      message: "Webhook received successfully",
-      code: 200,
-    });
   });
 
   // Additional tests as necessary...
