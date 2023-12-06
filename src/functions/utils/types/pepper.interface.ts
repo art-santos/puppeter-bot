@@ -1,3 +1,5 @@
+import { PAYMENT_STATUS } from "./interfaces/User.interface.types";
+
 export interface PepperWebhookPayload {
   currency: string;
   payment_engine: string;
@@ -6,7 +8,7 @@ export interface PepperWebhookPayload {
   abandonmentId?: string;
   client_id: string;
   payment_type: string;
-  status: string;
+  status: PAYMENT_STATUS;
   prod: number;
   prod_name: string;
   producer_name: string;
