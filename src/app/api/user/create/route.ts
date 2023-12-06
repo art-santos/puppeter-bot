@@ -29,7 +29,12 @@ export async function POST(req: Request, res: Response) {
     const BUY_STATUS = getBuyStatusByKey("");
     const { data, error } = await supabase
       .from("chats")
-      .insert({ phone_number: phone, buy_status: BUY_STATUS })
+      .insert({
+        phone_number: phone,
+        buy_status: BUY_STATUS,
+        messages: [],
+        messages_sent: 0,
+      })
       .select()
       .returns<IUser>();
 
