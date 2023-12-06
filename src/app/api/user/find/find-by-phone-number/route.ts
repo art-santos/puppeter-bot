@@ -34,7 +34,7 @@ export async function POST(req: Request, res: Response) {
     // Prepare response data
     const responseData = { ...existingUser, phone_number: phone };
 
-    return NextResponse.json({ data: responseData, code: 201 });
+    return NextResponse.json({ data: responseData, code: 201, error: null });
   } catch (error: any) {
     console.log(error);
     return NextResponse.json({
