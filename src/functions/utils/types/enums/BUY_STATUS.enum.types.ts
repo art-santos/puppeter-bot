@@ -22,6 +22,7 @@ export const getBuyStatusByKey = (key?: string): BUY_STATUS => {
 export const convertPaymentStatusToBuyStatus = (
   paymentStatus: PAYMENT_STATUS
 ): BUY_STATUS => {
+  console.log("now", paymentStatus);
   switch (paymentStatus) {
     case PAYMENT_STATUS.Abandonment:
       return BUY_STATUS.REFUSED; // Map to an appropriate BUY_STATUS

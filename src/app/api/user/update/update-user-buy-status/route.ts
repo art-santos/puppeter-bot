@@ -1,62 +1,81 @@
-import supabase from "@/app/clients/supabaseClient";
+import { IUser } from "./../../../../../functions/utils/types/interfaces/User.interface.types";
+import {
+  BUY_STATUS,
+  convertPaymentStatusToBuyStatus,
+} from "./../../../../../functions/utils/types/enums/BUY_STATUS.enum.types";
 import { NextResponse } from "next/server";
-
+import { tryToFindOrCreateUser } from "@/functions/utils/db/tryToFindOrCreateUser.db.utils";
+import { getPaymentStatusByKey } from "@/functions/utils/types/enums/PAYMENT_STATUS.enum.types";
+import { PepperWebhookPayload } from "@/functions/utils/types/pepper.interface";
+import _ from "lodash";
+import { diff, DiffEdit } from "deep-diff";
+import supabase from "@/app/clients/supabaseClient";
+import { getDifferences } from "@/functions/utils/base/getDifferences";
 //req for this must contain the phone number and the buy status
+
 export async function POST(req: Request, res: Response) {
   //check if the req contains the phone number and the buy status
+  const info = (await req.json()) as PepperWebhookPayload;
 
-  const info = await req.json();
+  const PAYMENT: BUY_STATUS = convertPaymentStatusToBuyStatus(
+    getPaymentStatusByKey(info.status)
+  );
+  const newInfo = {
+    ...info,
+    buy_status: PAYMENT,
+  };
 
-  const phone = trimPhone(info.phone);
+  const { data } = await tryToFindOrCreateUser(newInfo);
 
-  //check if the req contains the phone number and the buy status
-  if (info.phone === undefined || info.buy_status === undefined) {
-    return NextResponse.json({
-      message: "error",
-      code: 500,
-      error: "phone number or buy status missing",
-    });
-  }
-
-  //first verify that the phone number is not already in the database
-  const { data: user, error: userError } = await supabase
+  const { data: updatedUser, error: updatedUserError } = await supabase
     .from("chats")
-    .select("phone_number")
-    .eq("phone_number", phone);
+    .update({ buy_status: PAYMENT })
+    .eq("phone_number", data?.phone_number)
+    .select()
+    .returns<IUser>()
+    .single();
 
-  if (userError) {
-    console.log(userError);
-    return NextResponse.json({ message: "error", code: 500, error: userError });
+  if (updatedUser === undefined || updatedUserError !== null) {
+    const responseData = {
+      data: null,
+      code: 201,
+      id: undefined,
+      phone_number: undefined,
+      buy_status: undefined,
+      differences: undefined,
+      error: updatedUserError,
+    };
+
+    return NextResponse.json({ ...responseData });
   }
 
-  //now update the user's buy status
-  const { data, error } = await supabase
-    .from("chats")
-    .update({ buy_status: info.buy_status })
-    .eq("phone_number", phone);
+  if (data === undefined || updatedUser === undefined) {
+    const responseData = {
+      data: null,
+      code: 201,
+      id: undefined,
+      phone_number: undefined,
+      buy_status: undefined,
+      differences: undefined,
+      error: "error",
+    };
 
-  if (error) {
-    console.log(error);
-    return NextResponse.json({ message: "error", code: 500, error: error });
+    return NextResponse.json({ ...responseData });
   }
 
-  //if the user is not in the database, return an error
-  if (user === undefined || user.length === 0) {
-    return NextResponse.json({
-      message: "error",
-      code: 500,
-      error: "user not found",
-    });
-  }
+  const updated: IUser = updatedUser;
 
-  //check if the change was successful
-  if (data === undefined) {
-    return NextResponse.json({
-      message: "error",
-      code: 500,
-      error: "user not updated",
-    });
-  }
+  const differences = getDifferences(data, updatedUser);
 
-  return NextResponse.json({ data: user, code: 201, error: null });
+  const responseData = {
+    data: updatedUser,
+    code: 201,
+    id: updated.id,
+    phone_number: updated.phone_number,
+    buy_status: updated.buy_status,
+    differences,
+    error: null,
+  };
+
+  return NextResponse.json({ ...responseData });
 }
