@@ -1,56 +1,67 @@
 import axios from "axios";
+import {
+  PAYMENT_STATUS,
+  getPaymentStatusByKey,
+} from "./../../../../../functions/utils/types/enums/PAYMENT_STATUS.enum.types";
+import {
+  BUY_STATUS,
+  convertPaymentStatusToBuyStatus,
+} from "./../../../../../functions/utils/types/enums/BUY_STATUS.enum.types";
 
-describe("POST API /api/user/update", () => {
-  const BASE_URL = "http://localhost:3001"; // Replace with your actual server URL
-  const route = `${BASE_URL}/api/user/update/update-user-buy-status`;
+describe("API /api/user/update/update-user-buy-status", () => {
+  const BASE_URL = "http://localhost:3001";
+  const USER_CREATE_ROUTE = BASE_URL + "/api/user/create";
+  const UPDATE_BUY_STATUS_ROUTE =
+    BASE_URL + "/api/user/update/update-user-buy-status";
 
-  it("should update user buy status if phone number exists", async () => {
-    try {
-      const response = await axios.post(route, {
-        phone: "12345627890",
-        buy_status: "new-status",
-      });
+  it("must create a user and then update the buy status", async () => {
+    // Creating a user
+    const createUserRequestBody = {
+      phone_number: Math.random().toString().slice(2, 12), // Random 10 digit phone number
+      // other necessary fields to create user
+    };
 
-      expect(response.status).toBe(201);
-      expect(response.data).toEqual({
-        data: expect.anything(),
-        code: 201,
-        error: null,
-      });
-    } catch (error) {
-      // Handle error
-      console.error("Error in API test:", error);
-    }
+    console.log(createUserRequestBody);
+
+    const createUserResponse = await axios.post(
+      USER_CREATE_ROUTE,
+      createUserRequestBody
+    );
+
+    console.log(createUserResponse.data);
+
+    expect(createUserResponse.status).toBe(200); // Assuming 201 is the success status code for creation
+
+    // Updating buy status for the created user
+    const updateBuyStatusRequestBody = {
+      phone_number: createUserRequestBody.phone_number,
+      status: PAYMENT_STATUS.Paid,
+    };
+
+    const PAYMENT: BUY_STATUS = convertPaymentStatusToBuyStatus(
+      getPaymentStatusByKey(updateBuyStatusRequestBody.status)
+    );
+
+    const updateBuyStatusResponse = await axios.post(
+      UPDATE_BUY_STATUS_ROUTE,
+      updateBuyStatusRequestBody
+    );
+
+    console.log(updateBuyStatusResponse.data);
+
+    expect(updateBuyStatusResponse.status).toBe(200); // Assuming 200 is the success status code for update
+    expect(updateBuyStatusResponse.data).toEqual({
+      data: expect.anything(), // Validate the structure of the data object as needed
+      code: 201,
+      error: null,
+      phone_number: updateBuyStatusRequestBody.phone_number,
+      buy_status: PAYMENT,
+      differences: {
+        buy_status: { before: "WAITING", after: "APPROVED" },
+      },
+      id: expect.anything(),
+    });
   });
 
-  it("should return an error if phone number does not exist", async () => {
-    try {
-      const response = await axios.post(route, {
-        phone: "12345627890",
-        buy_status: "new-status",
-      });
-
-      expect(response.status).toBe(500);
-      expect(response.data).toEqual({
-        message: "error",
-        code: 500,
-        error: "user not found",
-      });
-    } catch (error: any) {
-      // Handle HTTP error response
-      if (error.response) {
-        console.log(
-          "🚀 ~ file: updateUserBuyStatus.test.ts:42 ~ it ~ error:",
-          error
-        );
-
-        const { response } = error;
-        expect(response.status).toBe(500);
-      } else {
-        console.error("Error in API test:", error);
-      }
-    }
-  });
-
-  // Add more test cases as necessary...
+  // ... other tests
 });

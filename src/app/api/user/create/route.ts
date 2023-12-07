@@ -1,8 +1,8 @@
-import { IUser } from "@/functions/utils/types/interfaces/User.interface.types";
+import { IUser } from "../../../../functions/utils/types/interfaces/User.interface.types";
 import supabase from "../../../clients/supabaseClient";
 import { trimPhone } from "./../../../../functions/utils/trimPhone";
 import { NextResponse } from "next/server";
-import { getBuyStatusByKey } from "@/functions/utils/types/enums/BUY_STATUS.enum.types";
+import { getBuyStatusByKey } from "../../../../functions/utils/types/enums/BUY_STATUS.enum.types";
 
 export async function POST(req: Request, res: Response) {
   const userInfo: IUser = (await req.json()) as IUser;
