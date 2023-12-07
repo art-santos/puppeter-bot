@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
   const { data, error } = await supabase
-    .from("users")
+    .from("chats")
     .select(
       //find where phone_number is equal to the requested phone number
       "phone_number"

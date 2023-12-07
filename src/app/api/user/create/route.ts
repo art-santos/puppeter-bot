@@ -11,7 +11,7 @@ export async function POST(req: Request, res: Response) {
 
   //first verify that the phone number is not already in the Infobase
   const { data: user, error: userError } = await supabase
-    .from("users")
+    .from("chats")
     .select("phone_number")
     .eq("phone_number", phone)
     .limit(1);
