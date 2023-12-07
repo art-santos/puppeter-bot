@@ -6,6 +6,8 @@ import {
 } from "../../../functions/utils/types/enums/PAYMENT_STATUS.enum.types";
 import { PepperWebhookPayload } from "../../../functions/utils/types/pepper.interface";
 import { NextResponse } from "next/server";
+import axios from "axios";
+import { APILINKS } from "@/functions/utils/links/links.enum.types";
 
 interface WebhookCreationResponse {
   data: PepperWebhookPayload[];
@@ -99,8 +101,29 @@ export async function POST(req: Request, res: Response) {
         },
       });
     } else {
+      const updateBuyStatusResponse = await axios.post(
+        APILINKS.UPDATE_USER_BUY_STATUS,
+        {
+          phone_number: webhookData.phone_number,
+          status: webhookData.status,
+        }
+      );
+
+      if (updateBuyStatusResponse.data.error) {
+        return NextResponse.json({
+          data: responseData as WebhookCreationResponse,
+          error: {
+            message: updateBuyStatusResponse.data.error,
+            code: 500,
+          },
+        });
+      }
+
       return NextResponse.json({
-        data: responseData as WebhookCreationResponse,
+        data: {
+          response: responseData as WebhookCreationResponse,
+          updateBuyStatusResponse: updateBuyStatusResponse.data,
+        },
         error: null,
       });
     }
