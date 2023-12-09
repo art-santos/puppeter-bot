@@ -78,7 +78,8 @@ export async function POST(req: Request, res: Response) {
     const { data, error } = await supabase
       .from("pepper_webhook_payloads") // Replace 'webhook_logs' with your table name
       .insert(insertData)
-      .select();
+      .select()
+      .single();
 
     if (error) {
       throw error;

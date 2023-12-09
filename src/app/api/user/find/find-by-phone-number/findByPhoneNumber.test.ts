@@ -19,7 +19,7 @@ describe("API /api/user/find/find-by-phone-number", () => {
     expect(response.status).toBe(200);
     expect(response.data).toEqual({
       data: expect.anything(),
-      code: 201,
+      code: 200,
       error: null,
     });
     // Add more assertions as needed

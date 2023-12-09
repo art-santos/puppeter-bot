@@ -28,8 +28,6 @@ describe("API /api/user/update/update-user-buy-status", () => {
       createUserRequestBody
     );
 
-    console.log(createUserResponse.data);
-
     expect(createUserResponse.status).toBe(200); // Assuming 201 is the success status code for creation
 
     // Updating buy status for the created user
@@ -46,8 +44,6 @@ describe("API /api/user/update/update-user-buy-status", () => {
       UPDATE_BUY_STATUS_ROUTE,
       updateBuyStatusRequestBody
     );
-
-    console.log(updateBuyStatusResponse.data);
 
     expect(updateBuyStatusResponse.status).toBe(200); // Assuming 200 is the success status code for update
     expect(updateBuyStatusResponse.data).toEqual({
