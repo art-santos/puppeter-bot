@@ -20,6 +20,7 @@ export async function POST(req: Request, res: Response) {
 
     // Verify that the phone number is not already in the database
     const { data: existingUser, error: userError } = await supabase
+
       .from("chats")
       .select("phone_number")
       .eq("phone_number", phone)
@@ -34,7 +35,7 @@ export async function POST(req: Request, res: Response) {
     // Prepare response data
     const responseData = { ...existingUser, phone_number: phone };
 
-    return NextResponse.json({ data: responseData, code: 201, error: null });
+    return NextResponse.json({ data: responseData, code: 200, error: null });
   } catch (error: any) {
     console.log(error);
     return NextResponse.json({
