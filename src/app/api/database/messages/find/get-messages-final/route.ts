@@ -5,8 +5,6 @@ import { NextResponse } from "next/server";
 export async function GET() {
   try {
     const result = await supabase.from("final_messages").select(`*`);
-    console.log("result", result);
-    console.log("result", result.data);
 
     if (result.error) {
       throw new Error(result.error.message);
