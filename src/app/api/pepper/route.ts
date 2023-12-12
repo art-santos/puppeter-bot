@@ -85,12 +85,14 @@ export async function POST(req: Request, res: Response) {
       throw error;
     }
 
+    console.log("Webhook data saved to Supabase:", data);
+
     // get the webhook id
     const responseData: WebhookCreationResponse = {
       data: data,
-      id: data[0].id,
-      phone_number: data[0].phone_number,
-      payment_status: getPaymentStatusByKey(data[0].payment_status),
+      id: data?.id,
+      phone_number: data.phone_number,
+      payment_status: getPaymentStatusByKey(data.payment_status),
     };
 
     if (webhookData.status === undefined || webhookData.status === null) {

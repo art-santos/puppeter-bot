@@ -38,7 +38,7 @@ describe("Pepper Webhook Endpoint", () => {
     first_name: "João",
     last_name: "Maria",
     doc: "111.222.333-45",
-    phone_number: "+5511970503010",
+    phone_number: "+551197050dsvwdvsvs3010",
     billet_url: "https://pepper.com.br/example",
     billet_barcode: "00000 11111 22222 333333",
     pix_URL: "https://pepper.com.br/example",
