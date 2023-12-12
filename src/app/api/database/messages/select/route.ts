@@ -33,7 +33,6 @@ export async function GET(req: NextRequest) {
     const getMessages = () => {
       const messages = result!.messages.normalMessages;
       const messageCount = getUserMessages();
-      console.log("🚀 ~ file: route.ts:45 ~ GET ~ messageCount:", messageCount);
       // Calculate the index for the message to return
       const messageIndex = messageCount % messages.length;
 
@@ -42,7 +41,6 @@ export async function GET(req: NextRequest) {
 
     const message = getMessages();
 
-    console.log("🚀 ~ file: route.ts:45 ~ GET ~ message:", message);
     // Update the user message count if necessary
     // Assuming updateUserMessageCount function handles the update logic
     const updateRes = await axios.put(
@@ -54,10 +52,6 @@ export async function GET(req: NextRequest) {
     );
 
     const { data: updateData } = await updateRes.data;
-    console.log(
-      "🚀 ~ file: route.ts:45 ~ GET ~ updateData:",
-      updateData.messages_sent
-    );
 
     if (messageRes.error) {
       throw new Error(messageRes.error.message);
@@ -69,7 +63,7 @@ export async function GET(req: NextRequest) {
 
     const resultData = {
       message: message.message_text,
-      user: userRes,
+      user: updateData,
     };
 
     return NextResponse.json({ message: "OK", data: resultData, status: 200 });

@@ -10,71 +10,52 @@ import { PepperWebhookPayload } from "@/functions/utils/types/pepper.interface";
 import _ from "lodash";
 import supabase from "@/app/clients/supabaseClient";
 import { getDifferences } from "@/functions/utils/base/getDifferences";
-//req for this must contain the phone number and the buy status
 
-export async function POST(req: Request, res: Response) {
-  //check if the req contains the phone number and the buy status
-  const info = (await req.json()) as PepperWebhookPayload;
+export async function PUT(req: Request, res: Response) {
+  try {
+    const info = (await req.json()) as PepperWebhookPayload;
+    const PAYMENT: BUY_STATUS = convertPaymentStatusToBuyStatus(
+      getPaymentStatusByKey(info.status)
+    );
+    const newInfo = {
+      ...info,
+      buy_status: PAYMENT,
+    };
 
-  const PAYMENT: BUY_STATUS = convertPaymentStatusToBuyStatus(
-    getPaymentStatusByKey(info.status)
-  );
-  const newInfo = {
-    ...info,
-    buy_status: PAYMENT,
-  };
+    const { data } = await tryToFindOrCreateUser(newInfo);
 
-  const { data } = await tryToFindOrCreateUser(newInfo);
+    const { data: updatedUser, error: updatedUserError } = await supabase
+      .from("chats")
+      .update({ buy_status: PAYMENT })
+      .eq("phone_number", data?.phone_number)
+      .select()
+      .returns<IUser>()
+      .single();
 
-  const { data: updatedUser, error: updatedUserError } = await supabase
-    .from("chats")
-    .update({ buy_status: PAYMENT })
-    .eq("phone_number", data?.phone_number)
-    .select()
-    .returns<IUser>()
-    .single();
+    if (updatedUser === undefined || updatedUserError !== null || !data) {
+      throw new Error(updatedUserError?.message || "Failed to update user");
+    }
 
-  if (updatedUser === undefined || updatedUserError !== null) {
+    const updated: IUser = updatedUser;
+    const original: IUser = data;
+    const differences = getDifferences(original, updatedUser);
+
     const responseData = {
-      data: null,
-      code: 201,
-      id: undefined,
-      phone_number: undefined,
-      buy_status: undefined,
-      differences: undefined,
-      error: updatedUserError,
+      data: updatedUser,
+      code: 200, // OK status
+      id: updated.id,
+      phone_number: updated.phone_number,
+      buy_status: updated.buy_status,
+      differences,
+      error: null,
     };
 
     return NextResponse.json({ ...responseData });
-  }
-
-  if (data === undefined || updatedUser === undefined) {
-    const responseData = {
+  } catch (error: any) {
+    return NextResponse.json({
       data: null,
-      code: 201,
-      id: undefined,
-      phone_number: undefined,
-      buy_status: undefined,
-      differences: undefined,
-      error: "error",
-    };
-
-    return NextResponse.json({ ...responseData });
+      code: 500, // Internal Server Error
+      error: error.message || "An unexpected error occurred",
+    });
   }
-
-  const updated: IUser = updatedUser;
-
-  const differences = getDifferences(data, updatedUser);
-
-  const responseData = {
-    data: updatedUser,
-    code: 201,
-    id: updated.id,
-    phone_number: updated.phone_number,
-    buy_status: updated.buy_status,
-    differences,
-    error: null,
-  };
-
-  return NextResponse.json({ ...responseData });
 }

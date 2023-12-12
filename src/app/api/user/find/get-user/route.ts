@@ -10,7 +10,6 @@ export async function GET(req: NextRequest) {
   const phone = trimPhone(data.searchParams.get("phone_number") as string);
 
   try {
-    console.log("🚀 ~ file: route.ts:11 ~ GET ~ phone:", phone);
     //  Check if phone number is provided
     if (!phone) {
       return NextResponse.json({
@@ -28,7 +27,6 @@ export async function GET(req: NextRequest) {
       .eq("phone_number", phone)
       .single();
     if (error) {
-      console.log(error);
       return NextResponse.json({ message: "error", code: 500 });
     }
 
@@ -37,7 +35,6 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({ data: responseData, code: 200, error: null });
   } catch (error: any) {
-    console.log(error);
     return NextResponse.json({
       message: "error",
       code: 500,

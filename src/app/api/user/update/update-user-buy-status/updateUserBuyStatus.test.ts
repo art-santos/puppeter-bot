@@ -21,8 +21,6 @@ describe("API /api/user/update/update-user-buy-status", () => {
       // other necessary fields to create user
     };
 
-    console.log(createUserRequestBody);
-
     const createUserResponse = await axios.post(
       USER_CREATE_ROUTE,
       createUserRequestBody
@@ -40,7 +38,7 @@ describe("API /api/user/update/update-user-buy-status", () => {
       getPaymentStatusByKey(updateBuyStatusRequestBody.status)
     );
 
-    const updateBuyStatusResponse = await axios.post(
+    const updateBuyStatusResponse = await axios.put(
       UPDATE_BUY_STATUS_ROUTE,
       updateBuyStatusRequestBody
     );
@@ -48,7 +46,7 @@ describe("API /api/user/update/update-user-buy-status", () => {
     expect(updateBuyStatusResponse.status).toBe(200); // Assuming 200 is the success status code for update
     expect(updateBuyStatusResponse.data).toEqual({
       data: expect.anything(), // Validate the structure of the data object as needed
-      code: 201,
+      code: 200,
       error: null,
       phone_number: updateBuyStatusRequestBody.phone_number,
       buy_status: PAYMENT,
