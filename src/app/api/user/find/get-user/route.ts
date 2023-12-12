@@ -6,11 +6,6 @@ import { NextURL } from "next/dist/server/web/next-url";
 
 export async function GET(req: NextRequest) {
   const data = new NextURL(req.nextUrl);
-  console.log("🚀 ~ file: route.ts:9 ~ GET ~ data:", data);
-  console.log(
-    "🚀 ~ file: route.ts:9 ~ GET ~ data.searchParams:",
-    data.searchParams
-  );
 
   const phone = trimPhone(data.searchParams.get("phone_number") as string);
 

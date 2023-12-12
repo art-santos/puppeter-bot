@@ -7,8 +7,6 @@ export async function GET() {
     const result = await supabase.from("overflow_messages").select(`*
     normal_message_id
     `);
-    console.log("result", result);
-    console.log("result", result.data);
 
     if (result.error) {
       throw new Error(result.error.message);

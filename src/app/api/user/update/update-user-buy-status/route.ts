@@ -8,7 +8,6 @@ import { tryToFindOrCreateUser } from "@/functions/utils/db/tryToFindOrCreateUse
 import { getPaymentStatusByKey } from "@/functions/utils/types/enums/PAYMENT_STATUS.enum.types";
 import { PepperWebhookPayload } from "@/functions/utils/types/pepper.interface";
 import _ from "lodash";
-import { diff, DiffEdit } from "deep-diff";
 import supabase from "@/app/clients/supabaseClient";
 import { getDifferences } from "@/functions/utils/base/getDifferences";
 //req for this must contain the phone number and the buy status
