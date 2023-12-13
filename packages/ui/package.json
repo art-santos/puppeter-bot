@@ -11,9 +11,9 @@
     "@types/react": "^18.2.38",
     "@types/react-dom": "^18.2.17",
     "eslint": "^8.54.0",
-    "@repo/eslint-config": "*",
+    "@repo/eslint-config": "workspace:*",
     "react": "^18.2.0",
-    "@repo/typescript-config": "*",
+    "@repo/typescript-config": "workspace:*",
     "typescript": "^5.3.2"
   }
 }
