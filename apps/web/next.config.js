@@ -1,4 +1,9 @@
 const path = require("path");
+const withTM = require('next-transpile-modules')(['@repo/ui'])
+
+module.exports = withTM({
+  reactStrictMode: true
+})
 
 module.exports = {
   reactStrictMode: true,

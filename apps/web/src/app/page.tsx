@@ -15,9 +15,6 @@ export default function Web() {
     setError(undefined);
   }, [name]);
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setName(e.target.value);
-
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -31,35 +28,17 @@ export default function Web() {
     }
   };
 
-  const onReset = () => {
-    setName("");
-  };
-
   return (
     <div>
-      <h1>Web</h1>
-      <form onSubmit={onSubmit}>
-        <label htmlFor="name">Name </label>
-        <input
-          type="text"
-          name="name"
-          id="name"
-          value={name}
-          onChange={onChange}
-        ></input>
-        <Button type="submit">Submit</Button>
-      </form>
+      <h1 className="bg-black">Web</h1>
+
+      <Button type="submit" onSubmit={onSubmit}>
+        Submit
+      </Button>
       {error && (
         <div>
           <h3>Error</h3>
           <p>{error}</p>
-        </div>
-      )}
-      {response && (
-        <div>
-          <h3>Greeting</h3>
-          <p>{response.message}</p>
-          <Button onClick={onReset}>Reset</Button>
         </div>
       )}
     </div>
