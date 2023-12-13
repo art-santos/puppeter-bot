@@ -80,20 +80,19 @@ export async function POST(req: Request, res: Response) {
       .insert(insertData)
       .select()
       .single();
-
     if (error) {
       throw error;
     }
-
-    console.log("Webhook data saved to Supabase:", data);
 
     // get the webhook id
     const responseData: WebhookCreationResponse = {
       data: data,
       id: data?.id,
-      phone_number: data.phone_number,
+      phone_number: data?.phone_number,
       payment_status: getPaymentStatusByKey(data.payment_status),
     };
+
+    console.log("Webhook data saved to Supabase:", responseData);
 
     if (webhookData.status === undefined || webhookData.status === null) {
       return NextResponse.json({
@@ -104,7 +103,7 @@ export async function POST(req: Request, res: Response) {
         },
       });
     } else {
-      const updateBuyStatusResponse = await axios.post(
+      const updateBuyStatusResponse = await axios.put(
         APILINKS.UPDATE_USER_BUY_STATUS,
         {
           phone_number: webhookData.phone_number,
