@@ -2,9 +2,9 @@
   "name": "@repo/ui",
   "version": "0.0.0",
   "exports": {
-    "./button": "./src/button.tsx",
     "./postcss.config": "./src/configs/postcss.config.js",
-    "./tailwind.config": "./src/configs/tailwind.config.js"
+    "./tailwind.config": "./src/configs/tailwind.config.js",
+    "./form": "./src/form.tsx"
   },
   "scripts": {
     "lint": "eslint \"**/*.ts*\" --max-warnings 0"
@@ -26,8 +26,10 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "framer-motion": "^10.16.16",
+    "libphonenumber-js": "^1.10.51",
     "lodash": "^4.17.21",
     "react-dom": "^18.2.0",
-    "react-hook-form": "^7.49.2"
+    "react-hook-form": "^7.49.2",
+    "react-phone-input-2": "^2.15.1"
   }
 }

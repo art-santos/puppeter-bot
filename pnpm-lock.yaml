@@ -163,11 +163,13 @@ importers:
       autoprefixer: ^10.4.16
       eslint: ^8.54.0
       framer-motion: ^10.16.16
+      libphonenumber-js: ^1.10.51
       lodash: ^4.17.21
       postcss: ^8.4.32
       react: ^18.2.0
       react-dom: ^18.2.0
       react-hook-form: ^7.49.2
+      react-phone-input-2: ^2.15.1
       tailwindcss: ^3.3.6
       typescript: ^5.3.2
     dependencies:
@@ -175,9 +177,11 @@ importers:
       '@emotion/react': 11.11.1_qinpt5tsrh57s4kh6guy25fqdq
       '@emotion/styled': 11.11.0_ksuq5na5e72uen54lcvd7upyei
       framer-motion: 10.16.16_biqbaboplfbrettd7655fr4n2y
+      libphonenumber-js: 1.10.51
       lodash: 4.17.21
       react-dom: 18.2.0_react@18.2.0
       react-hook-form: 7.49.2_react@18.2.0
+      react-phone-input-2: 2.15.1_biqbaboplfbrettd7655fr4n2y
     devDependencies:
       '@repo/eslint-config': link:../eslint-config
       '@repo/typescript-config': link:../typescript-config
@@ -3573,6 +3577,10 @@ packages:
     resolution: {integrity: sha512-0TNiGstbQmCFwt4akjjBg5pLRTSyj/PkWQ1ZoO2zntmg9yLqSRxwEa4iCfQLGjqhiqBfOJa7W/E8wfGrTDmlZQ==}
     dev: true
 
+  /classnames/2.3.2:
+    resolution: {integrity: sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw==}
+    dev: false
+
   /clean-regexp/1.0.0:
     resolution: {integrity: sha512-GfisEZEJvzKrmGWkvfhgzcz/BllN1USeqD2V6tg14OAOgaCD2Z/PUEuxnAZ/nPvmaHRG7a8y77p1T/IRQ4D1Hw==}
     engines: {node: '>=4'}
@@ -6318,6 +6326,10 @@ packages:
       type-check: 0.4.0
     dev: true
 
+  /libphonenumber-js/1.10.51:
+    resolution: {integrity: sha512-vY2I+rQwrDQzoPds0JeTEpeWzbUJgqoV0O4v31PauHBb/e+1KCXKylHcDnBMgJZ9fH9mErsEbROJY3Z3JtqEmg==}
+    dev: false
+
   /lilconfig/2.1.0:
     resolution: {integrity: sha512-utWOt/GHzuUxnLKxB6dk81RoOeoNeHgbrXiuGk4yyF5qlRz+iIVWu56E2fqGHFrXz0QNUhLB/8nKqvRH66JKGQ==}
     engines: {node: '>=10'}
@@ -6351,6 +6363,10 @@ packages:
     dependencies:
       p-locate: 5.0.0
     dev: true
+
+  /lodash.debounce/4.0.8:
+    resolution: {integrity: sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==}
+    dev: false
 
   /lodash.includes/4.3.0:
     resolution: {integrity: sha512-W3Bx6mdkRTGtlJISOvVD/lbqjTlPPUDTMnlXZFnVwi9NKJ6tiAk6LVdlhZMm17VZisqhKcgzpO5Wz91PCt5b0w==}
@@ -6390,6 +6406,14 @@ packages:
 
   /lodash.once/4.1.1:
     resolution: {integrity: sha512-Sb487aTOCr9drQVL8pIxOzVhafOjZN9UU54hiN8PU3uAiSV7lx1yYNpbNmex2PK6dSJoNTSJUUswT651yww3Mg==}
+    dev: false
+
+  /lodash.reduce/4.6.0:
+    resolution: {integrity: sha512-6raRe2vxCYBhpBu+B+TtNGUzah+hQjVdu3E17wfusjyrXBka2nBS8OH/gjVZ5PvHOhWmIZTYri09Z6n/QfnNMw==}
+    dev: false
+
+  /lodash.startswith/4.2.1:
+    resolution: {integrity: sha512-XClYR1h4/fJ7H+mmCKppbiBmljN/nGs73iq2SjCT9SF4CBPoUHzLvWmH1GtZMhMBZSiRkHXfeA2RY1eIlJ75ww==}
     dev: false
 
   /lodash/4.17.11:
@@ -7248,6 +7272,22 @@ packages:
   /react-is/18.2.0:
     resolution: {integrity: sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==}
     dev: true
+
+  /react-phone-input-2/2.15.1_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-W03abwhXcwUoq+vUFvC6ch2+LJYMN8qSOiO889UH6S7SyMCQvox/LF3QWt+cZagZrRdi5z2ON3omnjoCUmlaYw==}
+    peerDependencies:
+      react: ^16.12.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^20.0.0 || ^21.0.0
+      react-dom: ^16.12.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^20.0.0 || ^21.0.0
+    dependencies:
+      classnames: 2.3.2
+      lodash.debounce: 4.0.8
+      lodash.memoize: 4.1.2
+      lodash.reduce: 4.6.0
+      lodash.startswith: 4.2.1
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
 
   /react-remove-scroll-bar/2.3.4_qinpt5tsrh57s4kh6guy25fqdq:
     resolution: {integrity: sha512-63C4YQBUt0m6ALadE9XV56hV8BgJWDmmTPY758iIJjfQKt2nYwoUrPk0LXRXcB/yIj82T1/Ixfdpdk68LwIB0A==}
