@@ -33,10 +33,6 @@ export const Form = () => {
 
     // Validate the phone number
     const fullPhoneNumber = value;
-    console.log(
-      "🚀 ~ file: form.tsx:34 ~ handlePhoneChange ~ fullPhoneNumber:",
-      fullPhoneNumber
-    );
 
     setIsValidNumber(isValidPhoneNumber(fullPhoneNumber, "BR"));
   };

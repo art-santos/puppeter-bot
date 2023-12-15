@@ -29,12 +29,15 @@
     "@heroicons/react": "^2.0.18",
     "@mui/icons-material": "^5.15.0",
     "@mui/material": "^5.15.0",
+    "dayjs": "^1.11.10",
     "framer-motion": "^10.16.16",
     "libphonenumber-js": "^1.10.51",
     "lodash": "^4.17.21",
+    "moment": "^2.29.4",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.49.2",
     "react-icons": "^4.12.0",
-    "react-phone-input-2": "^2.15.1"
+    "react-phone-input-2": "^2.15.1",
+    "superjson": "^2.2.1"
   }
 }

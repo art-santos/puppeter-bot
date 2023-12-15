@@ -1,29 +1,40 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import { FormatTableRow } from "./tableRow";
 import { TableHeader } from "./tableHead";
+import moment from "moment";
 
+//@ts-ignore
+const m = moment();
+//@ts-ignore
+
+const date = m.toISOString();
+//@ts-ignore
+// convert the date to moment and add ten minutes to it
+const tenMinutesFromNow = m.add(10, "minutes").toISOString();
+
+//@ts-ignore
 const people = [
   {
     phone_number: "11987654321",
     code: "12345678-ABCD-1234-EFGH-56789012IJKL",
-    generation_date: 1679923200, // Equivalent to 2023-04-01 00:00:00 UTC
-    expires_in: 1679923800, // 10 minutes later
+    generation_date: date,
+    expires_in: tenMinutesFromNow, // 10 minutes later
     payment_status: "Pending",
     regenerate: "Regenerate",
   },
   {
     phone_number: "21965432198",
     code: "87654321-ZYXW-8765-VUTS-43210987RQPO",
-    generation_date: 1679524800, // Equivalent to 2023-03-25 00:00:00 UTC
-    expires_in: 1679525400, // 10 minutes later
+    generation_date: date, // Equivalent to 2023-03-25 00:00:00 UTC
+    expires_in: tenMinutesFromNow, // 10 minutes later
     payment_status: "Completed",
     regenerate: "Regenerate",
   },
   {
     phone_number: "31976549876",
     code: "45678912-HGFD-5678-QWAS-12345678TYUI",
-    generation_date: 1680038400, // Equivalent to 2023-04-05 00:00:00 UTC
-    expires_in: 1680039000, // 10 minutes later
+    generation_date: date, // Equivalent to 2023-04-05 00:00:00 UTC
+    expires_in: tenMinutesFromNow, // 10 minutes later
     payment_status: "Failed",
     regenerate: "Regenerate",
   },
@@ -61,9 +72,13 @@ export const Table = () => {
                   {people.map((person, index) => (
                     <tr key={index} className="divide-x divide-gray-200">
                       {Object.keys(person).map((key) => {
-                        console.log("🚀 ~ file: Table.tsx:160 ~ key", key);
                         return (
-                          <FormatTableRow keyVal={key} value={person[key]} />
+                          //@ts-ignore
+                          <FormatTableRow
+                            keyVal={key}
+                            value={person[key]}
+                            person={person}
+                          />
                         );
                       })}
                     </tr>
