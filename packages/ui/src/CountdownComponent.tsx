@@ -28,6 +28,7 @@ export const CountdownTimer: React.FC<{
   const [isExpired, setIsExpired] = useState(false);
 
   useEffect(() => {
+    //@ts-ignore
     const expirationDate = new Date(expirationTimestamp);
 
     // Function to update the timer

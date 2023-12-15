@@ -76,7 +76,9 @@ export const Table = () => {
                           //@ts-ignore
                           <FormatTableRow
                             keyVal={key}
+                            //@ts-ignore
                             value={person[key]}
+                            //@ts-ignore
                             person={person}
                           />
                         );
