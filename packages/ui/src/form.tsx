@@ -1,3 +1,5 @@
+"use client";
+
 import { Button, ChakraProvider } from "@chakra-ui/react";
 import React, { useState } from "react";
 import PhoneInput from "react-phone-input-2";
@@ -5,7 +7,7 @@ import "react-phone-input-2/lib/style.css";
 import { isValidPhoneNumber } from "libphonenumber-js";
 import { PixGenerateButton } from "./Button";
 
-export const Form = ({ onSubmit }: { onSubmit: () => void }) => {
+export const Form = () => {
   const [phone, setPhone] = useState("");
   const [displayPhone, setDisplayPhone] = useState("");
   const [isValidNumber, setIsValidNumber] = useState(false);
